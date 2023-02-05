@@ -15,12 +15,11 @@ class TicTacToe:
     COMPUTER_O = 2  # нолик (игрок - компьютер)
 
     def __init__(self):
-        self.all_cell = lambda: ((i, j) for i in range(3) for j in range(3))
         self.init()
 
     def init(self):
+        self.all_cell = [(i, j) for i in range(3) for j in range(3)]
         self.pole = tuple(tuple(Cell() for _ in range(3)) for _ in range(3))
-        self.busy = []
 
     @staticmethod
     def check_indx(i, j):
@@ -58,7 +57,7 @@ class TicTacToe:
                                    '\nВвод данных: ')
                 else:
                     self.pole[i][j].value = TicTacToe.HUMAN_X
-                    self.busy.append((i, j))
+                    self.all_cell.remove((i, j))
                     break
             except:
                 coords = input('Вы ввели некорректные данные. Попробуйте еще раз. '
@@ -70,9 +69,9 @@ class TicTacToe:
     def computer_go(self):
         print('___________________________________________________________________')
         print('Компьютер думает...')
-        i, j = random.choice(list(set(self.all_cell()) - set(self.busy)))
+        i, j = random.choice(self.all_cell)
         self.pole[i][j].value = TicTacToe.COMPUTER_O
-        self.busy.append((i, j))
+        self.all_cell.remove((i, j))
         time.sleep(2)
         print('___________________________________________________________________')
 
