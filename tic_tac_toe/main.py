@@ -59,7 +59,7 @@ class TicTacToe:
 
     @property
     def is_draw(self):
-        return not (self.is_human_win or self.is_computer_win)
+        return (not self.is_human_win) and (not self.is_computer_win) and (not bool(self.all_cell))
 
     def show(self):
         for row in self.pole:
@@ -98,7 +98,7 @@ class TicTacToe:
         print('___________________________________________________________________')
 
     def __bool__(self):
-        return self.is_draw and bool(self.all_cell)
+        return not (self.is_human_win or self.is_computer_win or self.is_draw)
 
 
 cell = Cell()
@@ -129,17 +129,16 @@ else:
     assert False, "не сгенерировалось исключение IndexError"
 
 game.init()
-print(game.is_human_win)
-# assert game.is_human_win == False and game.is_computer_win == False and game.is_draw == False, "при инициализации игры атрибуты is_human_win, is_computer_win, is_draw должны быть равны False, возможно не пересчитывается статус игры при вызове метода init()"
-#
-# game[0, 0] = TicTacToe.HUMAN_X
-# game[1, 1] = TicTacToe.HUMAN_X
-# game[2, 2] = TicTacToe.HUMAN_X
-# assert game.is_human_win and game.is_computer_win == False and game.is_draw == False, "некорректно пересчитываются атрибуты is_human_win, is_computer_win, is_draw. Возможно не пересчитывается статус игры в момент присвоения новых значения по индексам: game[i, j] = value"
-#
-# game.init()
-# game[0, 0] = TicTacToe.COMPUTER_O
-# game[1, 0] = TicTacToe.COMPUTER_O
-# game[2, 0] = TicTacToe.COMPUTER_O
-# assert game.is_human_win == False and game.is_computer_win and game.is_draw == False, "некорректно пересчитываются атрибуты is_human_win, is_computer_win, is_draw. Возможно не пересчитывается статус игры в момент присвоения новых значения по индексам: game[i, j] = value"
+assert game.is_human_win == False and game.is_computer_win == False and game.is_draw == False, "при инициализации игры атрибуты is_human_win, is_computer_win, is_draw должны быть равны False, возможно не пересчитывается статус игры при вызове метода init()"
+
+game[0, 0] = TicTacToe.HUMAN_X
+game[1, 1] = TicTacToe.HUMAN_X
+game[2, 2] = TicTacToe.HUMAN_X
+assert game.is_human_win and game.is_computer_win == False and game.is_draw == False, "некорректно пересчитываются атрибуты is_human_win, is_computer_win, is_draw. Возможно не пересчитывается статус игры в момент присвоения новых значения по индексам: game[i, j] = value"
+
+game.init()
+game[0, 0] = TicTacToe.COMPUTER_O
+game[1, 0] = TicTacToe.COMPUTER_O
+game[2, 0] = TicTacToe.COMPUTER_O
+assert game.is_human_win == False and game.is_computer_win and game.is_draw == False, "некорректно пересчитываются атрибуты is_human_win, is_computer_win, is_draw. Возможно не пересчитывается статус игры в момент присвоения новых значения по индексам: game[i, j] = value"
 
