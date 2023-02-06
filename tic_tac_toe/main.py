@@ -36,8 +36,31 @@ class TicTacToe:
         self.check_indx(i, j)
         self.pole[i][j].value = value
 
-    def __iter__(self):
-        return (col for row in self.pole for col in row)
+    # def __iter__(self):
+    #     return (col for row in self.pole for col in row)
+
+    def is_win(self, val):
+        it1 = ((i, i) for i in range(3))
+        it2 = ((i, 2 - i) for i in range(3))
+        it3 = (((i, j) for j in range(3)) for i in range(3))
+        it4 = (((i, j) for i in range(3)) for j in range(3))
+        lst_it = [it1, it2, *it3, *it4]
+        for it in lst_it:
+            if all(self.pole[i][j] == val for i, j in it):
+                return True
+        return False
+
+    @property
+    def is_human_win(self):
+        return self.is_win(self.HUMAN_X)
+
+    @property
+    def is_computer_win(self):
+        return self.is_win(self.COMPUTER_O)
+
+    @property
+    def is_draw(self):
+        return not (self.is_human_win or self.is_computer_win)
 
     def show(self):
         for row in self.pole:
@@ -69,16 +92,43 @@ class TicTacToe:
     def computer_go(self):
         print('___________________________________________________________________')
         print('Компьютер думает...')
+        time.sleep(2)
         i, j = random.choice(self.all_cell)
         self.pole[i][j].value = TicTacToe.COMPUTER_O
         self.all_cell.remove((i, j))
-        time.sleep(2)
         print('___________________________________________________________________')
 
-t = TicTacToe()
+    def __bool__(self):
+        return self.is_draw and bool(self.all_cell)
 
-while True:
-    t.show()
-    t.human_go()
-    t.show()
-    t.computer_go()
+
+game = TicTacToe()
+game.init()
+step_game = 0
+while game:
+    game.show()
+
+    if step_game % 2 == 0:
+        game.human_go()
+    else:
+        game.computer_go()
+
+    step_game += 1
+
+
+game.show()
+
+if game.is_human_win:
+    print("Поздравляем! Вы победили!")
+elif game.is_computer_win:
+    print("Все получится, со временем")
+else:
+    print("Ничья.")
+
+# t = TicTacToe()
+#
+# while True:
+#     t.show()
+#     t.human_go()
+#     t.show()
+#     t.computer_go()
