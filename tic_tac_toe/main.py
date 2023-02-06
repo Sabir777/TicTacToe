@@ -14,9 +14,6 @@ class TicTacToe:
     HUMAN_X = 1  # крестик (игрок - человек)
     COMPUTER_O = 2  # нолик (игрок - компьютер)
 
-    def __init__(self):
-        self.init()
-
     def init(self):
         self.all_cell = [(i, j) for i in range(3) for j in range(3)]
         self.pole = tuple(tuple(Cell() for _ in range(3)) for _ in range(3))
@@ -36,17 +33,14 @@ class TicTacToe:
         self.check_indx(i, j)
         self.pole[i][j].value = value
 
-    # def __iter__(self):
-    #     return (col for row in self.pole for col in row)
-
     def is_win(self, val):
-        it1 = ((i, i) for i in range(3))
-        it2 = ((i, 2 - i) for i in range(3))
-        it3 = (((i, j) for j in range(3)) for i in range(3))
-        it4 = (((i, j) for i in range(3)) for j in range(3))
+        it1 = [(i, i) for i in range(3)]
+        it2 = [(i, 2 - i) for i in range(3)]
+        it3 = [[(i, j) for j in range(3)] for i in range(3)]
+        it4 = [[(i, j) for i in range(3)] for j in range(3)]
         lst_it = [it1, it2, *it3, *it4]
         for it in lst_it:
-            if all(self.pole[i][j] == val for i, j in it):
+            if all(self.pole[i][j].value == val for i, j in it):
                 return True
         return False
 
